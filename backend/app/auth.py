@@ -1,10 +1,17 @@
 from datetime import datetime, timedelta
-from jose import jwt
-from passlib.hash import argon2
 import os
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'secret')
-ALGORITHM = 'HS256'
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
+from passlib.hash import argon2
+from sqlalchemy.orm import Session
+
+from . import models
+from .database import SessionLocal
+
+SECRET_KEY = os.getenv("SECRET_KEY", "secret")
+ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
@@ -24,18 +31,13 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.utcnow() + timedelta(
+            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+        )
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-from jose import JWTError
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
-
-from .database import SessionLocal
-from . import models
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -51,7 +53,7 @@ def get_db():
 def decode_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
+        email: str | None = payload.get("sub")
         if email is None:
             raise HTTPException(status_code=401, detail="Invalid token")
         return email
@@ -59,7 +61,9 @@ def decode_token(token: str):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
     email = decode_token(token)
     user = db.query(models.User).filter(models.User.email == email).first()
     if user is None:
