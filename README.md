@@ -15,10 +15,17 @@ docker-compose up --build
 
 A API ficará disponível em `http://localhost:8000`.
 
+Os principais endpoints de autenticação são:
+
+- `POST /register` – cria um novo usuário.
+- `POST /login` – retorna um token JWT.
+
+O endpoint raiz `/` exige um token válido no cabeçalho `Authorization` (formato `Bearer <token>`).
+
 ## Estrutura do Projeto
 
 - `backend/` - Código Python da API e dos workers.
-- `frontend/` - Código do frontend (a ser desenvolvido).
+- `frontend/` - Código do frontend com páginas de login e registro simples.
 - `docker-compose.yml` - Orquestração dos serviços em contêiner.
 - `Dockerfile` - Imagem base para API e workers.
 

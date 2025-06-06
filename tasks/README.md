@@ -11,10 +11,10 @@ Este diretório reúne as tarefas sugeridas para iniciar o desenvolvimento do MV
 
 ## Sprint 1 – Autenticação Básica
 
-- [ ] Implementar modelos `User` e `Role` usando FastAPI e SQLAlchemy.
-- [ ] Criar endpoints de registro e login com senhas armazenadas via Argon2.
-- [ ] Gerar e validar tokens JWT para autenticação.
-- [ ] No frontend, criar páginas de login e registro simples.
+- [x] Implementar modelos `User` e `Role` usando FastAPI e SQLAlchemy.
+- [x] Criar endpoints de registro e login com senhas armazenadas via Argon2.
+- [x] Gerar e validar tokens JWT para autenticação.
+- [x] No frontend, criar páginas de login e registro simples.
 
 ## Sprint 2 – CI/CD e Qualidade de Código
 
