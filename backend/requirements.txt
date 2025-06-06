@@ -3,3 +3,7 @@ uvicorn[standard]
 celery
 redis
 psycopg2-binary
+SQLAlchemy
+python-jose[cryptography]
+passlib[argon2]
+httpx
