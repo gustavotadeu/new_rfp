@@ -4,10 +4,10 @@ Este diretório reúne as tarefas sugeridas para iniciar o desenvolvimento do MV
 
 ## Sprint 0 – Configuração Inicial
 
-- [ ] Estruturar os diretórios `backend/` e `frontend/` no repositório.
-- [ ] Adicionar `Dockerfile` e `docker-compose.yml` para API, workers e banco de dados.
-- [ ] Criar um `README.md` inicial com instruções de setup e execução local.
-- [ ] Configurar um pipeline simples no GitHub Actions para lint e testes.
+- [x] Estruturar os diretórios `backend/` e `frontend/` no repositório.
+- [x] Adicionar `Dockerfile` e `docker-compose.yml` para API, workers e banco de dados.
+- [x] Criar um `README.md` inicial com instruções de setup e execução local.
+- [x] Configurar um pipeline simples no GitHub Actions para lint e testes.
 
 ## Sprint 1 – Autenticação Básica
 
