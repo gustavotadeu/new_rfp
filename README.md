@@ -22,6 +22,11 @@ Os principais endpoints de autenticação são:
 - `POST /register` – cria um novo usuário.
 - `POST /login` – retorna um token JWT.
 
+Durante a inicialização, um usuário **admin** é criado automaticamente com:
+
+- Usuário: `admin@example.com`
+- Senha: `admin`
+
 O endpoint raiz `/` exige um token válido no cabeçalho `Authorization` (formato `Bearer <token>`).
 
 ## Estrutura do Projeto
