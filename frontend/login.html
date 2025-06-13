@@ -1,30 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <title>RFPGen Pro - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-xwQUK8T0aCl5fCdbEImdbiKLog50qD0e/UEM7sGPzO0b0v6Jl2aT90fPrmEu8x93+RaJgVhIaK3d3Na8P+JfSw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {font-family: Arial, sans-serif; background-color:#f2f6fc; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;}
+        .container{background:#fff; padding:2rem; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); width:320px; animation:fade 0.6s ease-in-out;}
+        @keyframes fade{from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:none;}}
+        h1{margin-top:0; color:#1e3a8a; text-align:center;}
+        .input-group{margin-bottom:1rem;}
+        label{display:block; margin-bottom:0.5rem; color:#1e3a8a;}
+        input{width:100%; padding:0.5rem; border:1px solid #cbd5e1; border-radius:4px;}
+        button{width:100%; background-color:#2563eb; color:#fff; border:none; padding:0.75rem; border-radius:4px; cursor:pointer;}
+        button:hover{background-color:#1d4ed8;}
+        #error{color:red; margin-top:0.5rem; text-align:center;}
+        .logo{text-align:center; margin-bottom:1rem;}
+        .logo img{max-width:120px;}
+    </style>
 </head>
 <body>
-    <h1>Login</h1>
+<div class="container">
+    <div class="logo">
+        <img id="logo" src="" alt="Logo">
+    </div>
+    <h1><i class="fa fa-sign-in-alt"></i> Login</h1>
     <form id="login-form">
-        <label>Email: <input type="email" id="email"></label><br>
-        <label>Password: <input type="password" id="password"></label><br>
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+        </div>
         <button type="submit">Login</button>
+        <div id="error"></div>
     </form>
-    <pre id="result"></pre>
-    <script>
-        document.getElementById('login-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const res = await fetch('/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email: document.getElementById('email').value, password: document.getElementById('password').value})
-            });
-            const data = await res.json();
-            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-            if (data.access_token) {
-                localStorage.setItem('token', data.access_token);
-            }
+</div>
+<script>
+    document.getElementById('login-form').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const res = await fetch('/login', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                email:document.getElementById('email').value,
+                password:document.getElementById('password').value
+            })
         });
-    </script>
+        if(res.ok){
+            const data = await res.json();
+            localStorage.setItem('token', data.access_token);
+            document.getElementById('error').textContent = '';
+            alert('Login successful');
+        }else{
+            document.getElementById('error').textContent = 'Erro ao fazer login';
+        }
+    });
+</script>
 </body>
 </html>
