@@ -23,6 +23,9 @@ services:
       - ./backend:/app/backend
     ports:
       - "8000:8000"
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
     depends_on:
       - db
       - redis
@@ -32,6 +35,9 @@ services:
     command: celery -A backend.app.main worker -l info
     volumes:
       - ./backend:/app/backend
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
     depends_on:
       - db
       - redis

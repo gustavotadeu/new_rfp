@@ -13,6 +13,11 @@ Para iniciar os serviços de desenvolvimento (API, worker, banco de dados e Redi
 docker-compose up --build
 ```
 
+O arquivo `docker-compose.yml` já define as variáveis de ambiente
+`CELERY_BROKER_URL` e `CELERY_RESULT_BACKEND` apontando para o serviço
+`redis`, garantindo que os workers do Celery consigam se conectar ao
+Redis corretamente.
+
 A API ficará disponível em `http://localhost:8000`.
 
 O frontend simples pode ser acessado em `http://localhost:3000`.
