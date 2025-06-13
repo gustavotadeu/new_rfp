@@ -15,6 +15,8 @@ docker-compose up --build
 
 A API ficará disponível em `http://localhost:8000`.
 
+O frontend simples pode ser acessado em `http://localhost:3000`.
+
 Os principais endpoints de autenticação são:
 
 - `POST /register` – cria um novo usuário.
@@ -35,6 +37,18 @@ Os testes podem ser executados com:
 
 ```bash
 pytest
+```
+
+Para rodar os testes iniciais do frontend:
+
+```bash
+cd frontend
+npm test
+```
+ou via Docker Compose:
+
+```bash
+docker-compose run --rm frontend npm test
 ```
 
 ## Pipeline CI
