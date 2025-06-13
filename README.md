@@ -16,6 +16,8 @@ docker-compose up --build
 A API ficará disponível em `http://localhost:8000`.
 
 O frontend simples pode ser acessado em `http://localhost:3000`.
+Após fazer login, abra `project.html` para criar projetos, fazer upload de RFPs
+e iniciar a análise via Celery.
 
 Os principais endpoints de autenticação são:
 
@@ -32,7 +34,7 @@ O endpoint raiz `/` exige um token válido no cabeçalho `Authorization` (format
 ## Estrutura do Projeto
 
 - `backend/` - Código Python da API e dos workers.
-- `frontend/` - Código do frontend com páginas de login e registro simples.
+- `frontend/` - Código do frontend com páginas de login, registro e projetos.
 - `docker-compose.yml` - Orquestração dos serviços em contêiner.
 - `Dockerfile` - Imagem base para API e workers.
 

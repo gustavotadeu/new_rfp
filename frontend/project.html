@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>RFPGen Pro - Projetos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-xwQUK8T0aCl5fCdbEImdbiKLog50qD0e/UEM7sGPzO0b0v6Jl2aT90fPrmEu8x93+RaJgVhIaK3d3Na8P+JfSw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f6fc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 40px;
+      }
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      input[type="text"], input[type="file"] {
+        width: 300px;
+        padding: 10px;
+        margin: 5px 0 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #result {
+        margin-top: 10px;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gerenciar Projetos</h1>
+    <div id="auth-warning" style="color:red;"></div>
+    <form id="project-form">
+      <label>Nome do Projeto</label><br />
+      <input type="text" id="project-name" required />
+      <button type="submit">Criar Projeto</button>
+    </form>
+
+    <form id="rfp-form" style="display:none;">
+      <label>Upload da RFP</label><br />
+      <input type="file" id="rfp-file" required />
+      <button type="submit">Enviar RFP</button>
+    </form>
+
+    <button id="analyze-btn" style="display:none;">Analisar RFP</button>
+    <div id="result"></div>
+
+    <script>
+      const token = localStorage.getItem('token');
+      if (!token) {
+        document.getElementById('auth-warning').textContent = 'Faça login primeiro.';
+      }
+      let projectId = null;
+      let rfpId = null;
+
+      document.getElementById('project-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const res = await fetch('http://localhost:8000/projects', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ name: document.getElementById('project-name').value }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          projectId = data.id;
+          document.getElementById('rfp-form').style.display = 'block';
+          document.getElementById('result').textContent = 'Projeto criado com ID ' + projectId;
+        } else {
+          document.getElementById('result').textContent = 'Erro ao criar projeto';
+        }
+      });
+
+      document.getElementById('rfp-form').addEventListener('submit', async e => {
+        e.preventDefault();
+        const fileInput = document.getElementById('rfp-file');
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+        const res = await fetch(`http://localhost:8000/projects/${projectId}/rfps`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+        if (res.ok) {
+          const data = await res.json();
+          rfpId = data.id;
+          document.getElementById('analyze-btn').style.display = 'block';
+          document.getElementById('result').textContent = 'RFP enviada com ID ' + rfpId;
+        } else {
+          document.getElementById('result').textContent = 'Erro ao enviar RFP';
+        }
+      });
+
+      document.getElementById('analyze-btn').addEventListener('click', async () => {
+        const res = await fetch(`http://localhost:8000/projects/${projectId}/rfps/${rfpId}/analyze`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('result').textContent = 'Tarefa enviada: ' + data.task_id;
+        } else {
+          document.getElementById('result').textContent = 'Erro ao iniciar análise';
+        }
+      });
+    </script>
+  </body>
+</html>

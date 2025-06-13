@@ -21,3 +21,22 @@ class User(Base):
     hashed_password = Column(String)
     role_id = Column(Integer, ForeignKey("roles.id"))
     role = relationship("Role", back_populates="users")
+
+
+class Project(Base):
+    __tablename__ = "projects"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner = relationship("User")
+    rfps = relationship("RFP", back_populates="project")
+
+
+class RFP(Base):
+    __tablename__ = "rfps"
+
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String)
+    project_id = Column(Integer, ForeignKey("projects.id"))
+    project = relationship("Project", back_populates="rfps")
