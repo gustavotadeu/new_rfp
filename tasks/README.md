@@ -18,9 +18,9 @@ Este diretório reúne as tarefas sugeridas para iniciar o desenvolvimento do MV
 
 ## Sprint 2 – CI/CD e Qualidade de Código
 
-- [ ] Configurar ferramentas de lint e formatação (Prettier, ESLint, Black).
-- [ ] Garantir que o `docker-compose` sobe sem erros em ambiente de CI.
-- [ ] Automatizar testes do backend no GitHub Actions.
+ - [x] Configurar ferramentas de lint e formatação (Prettier, ESLint, Black).
+ - [x] Garantir que o `docker-compose` sobe sem erros em ambiente de CI.
+ - [x] Automatizar testes do backend no GitHub Actions.
 
 ## Sprint 3 – Próximos Passos
 
