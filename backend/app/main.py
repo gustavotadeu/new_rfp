@@ -1,8 +1,41 @@
 from fastapi import FastAPI, Depends
 
 from . import routes, auth, models
+from .database import SessionLocal
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+def create_default_admin():
+    """Create an initial admin user if none exists."""
+    db = SessionLocal()
+    try:
+        admin_role = (
+            db.query(models.Role).filter(models.Role.name == "admin").first()
+        )
+        if not admin_role:
+            admin_role = models.Role(name="admin")
+            db.add(admin_role)
+            db.commit()
+            db.refresh(admin_role)
+
+        exists = (
+            db.query(models.User)
+            .filter(models.User.email == "admin@example.com")
+            .first()
+        )
+        if not exists:
+            db_user = models.User(
+                username="admin",
+                email="admin@example.com",
+                hashed_password=auth.get_password_hash("admin"),
+                role_id=admin_role.id,
+            )
+            db.add(db_user)
+            db.commit()
+    finally:
+        db.close()
 
 
 @app.get("/")
