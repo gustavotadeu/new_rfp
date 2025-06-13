@@ -19,9 +19,7 @@ def create_default_admin():
     """Create an initial admin user if none exists."""
     db = SessionLocal()
     try:
-        admin_role = (
-            db.query(models.Role).filter(models.Role.name == "admin").first()
-        )
+        admin_role = db.query(models.Role).filter(models.Role.name == "admin").first()
         if not admin_role:
             admin_role = models.Role(name="admin")
             db.add(admin_role)
