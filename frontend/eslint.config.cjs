@@ -1,9 +1,9 @@
-import js from '@eslint/js';
+const js = require('@eslint/js');
 
-export default [
+module.exports = [
   js.configs.recommended,
   {
-    files: ['frontend/**/*.js'],
+    files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 2021,
       sourceType: 'module',
@@ -11,7 +11,7 @@ export default [
     rules: {},
   },
   {
-    files: ['frontend/__tests__/**/*.js'],
+    files: ['__tests__/**/*.js'],
     languageOptions: {
       globals: {
         test: 'readonly',
