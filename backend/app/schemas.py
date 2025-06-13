@@ -27,3 +27,23 @@ class Token(BaseModel):
 class LoginData(BaseModel):
     email: str
     password: str
+
+
+class ProjectCreate(BaseModel):
+    name: str
+
+
+class ProjectOut(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class RFPOut(BaseModel):
+    id: int
+    filename: str
+
+    class Config:
+        orm_mode = True

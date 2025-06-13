@@ -7,3 +7,5 @@ SQLAlchemy
 python-jose[cryptography]
 passlib[argon2]
 httpx
+openai
+python-multipart

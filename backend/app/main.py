@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
+from .celery_app import celery_app
+
 from . import routes, auth, models
 from .database import SessionLocal
 
@@ -50,3 +52,6 @@ def read_root(current_user: models.User = Depends(auth.get_current_user)):
 
 
 app.include_router(routes.router)
+
+# expose celery for worker entry point
+celery = celery_app
