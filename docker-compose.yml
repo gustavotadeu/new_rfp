@@ -32,7 +32,8 @@ services:
 
   worker:
     build: .
-    command: celery -A backend.app.main worker -l info
+    # start worker with explicit celery app module to avoid FastAPI conflict
+    command: celery -A backend.app.celery_app:celery_app worker -l info
     volumes:
       - ./backend:/app/backend
     environment:
